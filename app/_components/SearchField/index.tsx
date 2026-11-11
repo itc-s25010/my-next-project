@@ -34,7 +34,7 @@ function SearchFieldComponent() {
           name="q"
           defaultValue={searchParams.get("q") ?? undefined}
           placeholder="キーワードを入力"
-          className={styles.serchInput}
+          className={styles.searchInput}
         />
       </label>
     </form>
