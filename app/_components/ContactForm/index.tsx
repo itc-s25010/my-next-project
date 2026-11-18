@@ -1,7 +1,8 @@
 "use client";
 
+import { sendGAEvent } from "@next/third-parties/google";
 import { createContactData } from "@/app/_actions/contact";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import styles from "./index.module.css";
 
 const initialState = {
@@ -10,8 +11,13 @@ const initialState = {
 };
 
 export default function ContactForm() {
-  const [state, formAction] = useFormState(createContactData, initialState);
+  const [state, formAction] = useActionState(createContactData, initialState);
   console.log(state);
+
+  const handleSubmit = () => {
+    sendGAEvent({ event: "contact", value: "submit" });
+  };
+
   if (state.status === "success") {
     return (
       <p className={styles.success}>
@@ -23,14 +29,14 @@ export default function ContactForm() {
   }
 
   return (
-    <form className={styles.form} action={formAction}>
+    <form className={styles.form} action={formAction} onSubmit={handleSubmit}>
       <div className={styles.horizontal}>
         <div className={styles.item}>
           <label className={styles.label} htmlFor="lastname">
             姓
           </label>
           <input
-            className={styles.texfield}
+            className={styles.textfield}
             type="text"
             id="lastname"
             name="lastname"
@@ -41,7 +47,7 @@ export default function ContactForm() {
             名
           </label>
           <input
-            className={styles.texfield}
+            className={styles.textfield}
             type="text"
             id="firstname"
             name="firstname"
@@ -53,7 +59,7 @@ export default function ContactForm() {
           会社名
         </label>
         <input
-          className={styles.texfield}
+          className={styles.textfield}
           type="text"
           id="company"
           name="company"
@@ -64,7 +70,7 @@ export default function ContactForm() {
           メールアドレス
         </label>
         <input
-          className={styles.texfield}
+          className={styles.textfield}
           type="email"
           id="email"
           name="email"
